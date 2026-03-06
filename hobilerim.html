@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kişisel Sayfa – Hobilerim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0e0e0e;--surface:#161616;--accent:#c8a96e;--accent2:#7eb8a4;--text:#e8e2d9;--muted:#888;--border:#2a2a2a}
+    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden}
+    .bg-dots{position:fixed;inset:0;pointer-events:none;z-index:-1;background-image:radial-gradient(circle,rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px}
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 3rem;background:rgba(14,14,14,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);animation:slideDown .8s ease forwards}
+    @keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
+    .nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--accent)}
+    .nav-links{display:flex;gap:2.5rem;list-style:none}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;transition:color .3s;position:relative}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s}
+    .nav-links a:hover,.nav-links a.active{color:var(--accent)}
+    .nav-links a:hover::after,.nav-links a.active::after{width:100%}
+    .page-header{padding:10rem 3rem 4rem;max-width:1100px;margin:0 auto;animation:fadeUp 1s .2s both}
+    @keyframes fadeUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+    .page-eyebrow{font-size:.72rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent2);margin-bottom:1rem}
+    .page-title{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4rem);line-height:1.1}
+    .page-title em{font-style:italic;color:var(--accent)}
+    .hobbies-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:1100px;margin:0 auto;padding:0 3rem 4rem}
+    .hobby-card{background:var(--surface);border:1px solid var(--border);padding:2rem;transition:border-color .3s,transform .3s;opacity:0;transform:translateY(30px);animation:cardIn .6s forwards}
+    @keyframes cardIn{to{opacity:1;transform:translateY(0)}}
+    .hobby-card:nth-child(1){animation-delay:.3s}.hobby-card:nth-child(2){animation-delay:.45s}.hobby-card:nth-child(3){animation-delay:.6s}
+    .hobby-card:nth-child(4){animation-delay:.75s}.hobby-card:nth-child(5){animation-delay:.9s}.hobby-card:nth-child(6){animation-delay:1.05s}
+    .hobby-card:hover{border-color:var(--accent);transform:translateY(-6px)}
+    .hobby-icon{font-size:2.5rem;margin-bottom:1.2rem;display:block;animation:pulse 3s ease-in-out infinite}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+    .hobby-title{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:.8rem}
+    .hobby-desc{color:var(--muted);font-size:.9rem;line-height:1.75}
+    .divider{width:60px;height:1px;background:var(--accent);margin:0 3rem 4rem}
+    .map-section{max-width:1100px;margin:0 auto;padding:0 3rem 6rem}
+    .map-heading{font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:.5rem}
+    .map-sub{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem;line-height:1.7}
+    #map{width:100%;height:500px;border:1px solid var(--accent);z-index:1}
+    .leaflet-popup-content-wrapper{background:#1e1e1e !important;color:#e8e2d9 !important;border:1px solid #c8a96e !important;border-radius:0 !important;box-shadow:0 4px 20px rgba(0,0,0,.6) !important}
+    .leaflet-popup-tip{background:#1e1e1e !important}
+    .leaflet-popup-close-button{color:#c8a96e !important}
+    .map-legend{display:flex;gap:2rem;margin-top:1rem;flex-wrap:wrap}
+    .legend-item{display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--muted)}
+    .legend-dot{width:12px;height:12px;border-radius:50%}
+    footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.8rem}
+    @media(max-width:768px){nav{padding:1rem 1.5rem}.page-header,.hobbies-grid,.map-section{padding-left:1.5rem;padding-right:1.5rem}.hobbies-grid{grid-template-columns:1fr}.nav-links{gap:1.2rem}}
+  </style>
+</head>
+<body>
+  <div class="bg-dots"></div>
+  <nav>
+    <div class="nav-logo">A.K.</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Hakkımda</a></li>
+      <li><a href="hobilerim.html" class="active">Hobilerim</a></li>
+      <li><a href="iletisim.html">İletişim</a></li>
+    </ul>
+  </nav>
+  <div class="page-header">
+    <p class="page-eyebrow">Nelerden Zevk Alırım?</p>
+    <h1 class="page-title">Hobilerim &<br><em>İlgi Alanlarım</em></h1>
+  </div>
+  <div class="hobbies-grid">
+    <div class="hobby-card"><span class="hobby-icon">🧭</span><h3 class="hobby-title">Doğa Yürüyüşleri</h3><p class="hobby-desc">Haritaları gerçek dünyada deneyimlemek için yürüyüş yapmayı seviyorum. Türkiye'nin dağ yollarını keşfediyorum.</p></div>
+    <div class="hobby-card"><span class="hobby-icon">📸</span><h3 class="hobby-title">Fotoğrafçılık</h3><p class="hobby-desc">Mekânsal perspektifle çevremi belgeliyorum. Drone fotoğrafçılığı ve hava görüntüleri özellikle ilgimi çekiyor.</p></div>
+    <div class="hobby-card"><span class="hobby-icon">🎮</span><h3 class="hobby-title">Oyun Geliştirme</h3><p class="hobby-desc">Harita tabanlı oyun mekanikleri üzerine küçük projeler geliştiriyorum.</p></div>
+    <div class="hobby-card"><span class="hobby-icon">📚</span><h3 class="hobby-title">Okumak</h3><p class="hobby-desc">Bilim kurgu ve tarih kitapları okumaktan büyük keyif alıyorum. Coğrafi keşifler konuları özellikle ilgimi çekiyor.</p></div>
+    <div class="hobby-card"><span class="hobby-icon">🚴</span><h3 class="hobby-title">Bisiklet</h3><p class="hobby-desc">Şehirleri bisikletle keşfetmek hem spor hem de kentsel coğrafyayı anlama açısından harika bir yol.</p></div>
+    <div class="hobby-card"><span class="hobby-icon">💻</span><h3 class="hobby-title">Açık Kaynak</h3><p class="hobby-desc">OpenStreetMap katkıcısıyım. Harita verilerini iyileştirmek için düzenli olarak katkıda bulunuyorum.</p></div>
+  </div>
+  <div class="divider"></div>
+  <div class="map-section">
+    <h2 class="map-heading">Gezdiğim Yerler</h2>
+    <p class="map-sub">Türkiye genelinde ziyaret ettiğim noktalar. Marker'lara tıklayarak detayları görebilirsin.</p>
+    <div id="map"></div>
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#c8a96e"></div><span>Ziyaret Edilen Şehir</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#7eb8a4"></div><span>Doğa / Yürüyüş</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e07070"></div><span>Tarihi Yer</span></div>
+    </div>
+  </div>
+  <footer>
+    <span>© 2025 Ali KARAAYDINLI</span>
+    <span>Hacettepe Üniversitesi – Harita Mühendisliği</span>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script>
+    var map = L.map('map').setView([39.0, 35.0], 6);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    function makeIcon(color) {
+      return L.divIcon({
+        className: '',
+        html: '<div style="width:16px;height:16px;border-radius:50%;background:'+color+';border:2px solid white;box-shadow:0 0 8px '+color+'"></div>',
+        iconSize: [16,16], iconAnchor: [8,8], popupAnchor: [0,-10]
+      });
+    }
+
+    var colorMap = {city:'#c8a96e', nature:'#7eb8a4', historic:'#e07070'};
+    var labelMap = {city:'Şehir', nature:'Doğa / Yürüyüş', historic:'Tarihi Yer'};
+
+    var places = [
+      {ll:[39.9334,32.8597], name:'Ankara',    type:'city',     desc:'Yaşadığım ve okuduğum şehir. Hacettepe Üniversitesi burada.'},
+      {ll:[41.0082,28.9784], name:'İstanbul',  type:'city',     desc:'Türkiye\'nin en büyük metropolü.'},
+      {ll:[38.4237,27.1428], name:'İzmir',     type:'city',     desc:'Ege\'nin incisi, güzel kıyılar.'},
+      {ll:[36.8969,30.7133], name:'Antalya',   type:'nature',   desc:'Toros Dağları yürüyüş parkurları ve Akdeniz kıyıları.'},
+      {ll:[37.8667,32.4833], name:'Konya',     type:'historic', desc:'Selçuklu başkenti, Mevlana Müzesi.'},
+      {ll:[39.7477,37.0179], name:'Sivas',     type:'historic', desc:'Tarihi kervan yolları kavşağı.'},
+      {ll:[41.2867,36.3300], name:'Samsun',    type:'nature',   desc:'Karadeniz yürüyüş parkurları ve yayla.'},
+      {ll:[38.7312,35.4787], name:'Kapadokya', type:'historic', desc:'Peri bacaları ve sıcak hava balonu turu.'},
+      {ll:[37.2154,28.3636], name:'Muğla',     type:'nature',   desc:'Likya Yolu yürüyüş güzergâhı.'},
+      {ll:[40.1885,29.0610], name:'Bursa',     type:'city',     desc:'Osmanlı\'nın ilk başkenti, Uludağ.'},
+    ];
+
+    places.forEach(function(p) {
+      var c = colorMap[p.type];
+      L.marker(p.ll, {icon: makeIcon(c)})
+        .addTo(map)
+        .bindPopup(
+          '<div style="font-family:sans-serif;padding:4px 2px;min-width:170px;">' +
+          '<div style="font-weight:700;font-size:1rem;margin-bottom:4px;">' + p.name + '</div>' +
+          '<div style="font-size:.75rem;color:' + c + ';margin-bottom:6px;font-weight:600;text-transform:uppercase;">' + labelMap[p.type] + '</div>' +
+          '<div style="font-size:.85rem;color:#ccc;line-height:1.5;">' + p.desc + '</div>' +
+          '</div>'
+        );
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kişisel Sayfa – Hakkımda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e0e;
+      --surface: #161616;
+      --accent: #c8a96e;
+      --accent2: #7eb8a4;
+      --text: #e8e2d9;
+      --muted: #888;
+      --border: #2a2a2a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: rgba(14,14,14,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      animation: slideDown 0.8s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a.active { color: var(--accent); }
+    .nav-links a.active::after { width: 100%; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0 3rem;
+      padding-top: 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 55%; height: 100%;
+      background: radial-gradient(ellipse at 70% 50%, rgba(200,169,110,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-text { animation: fadeUp 1s 0.3s both; }
+
+    @keyframes fadeUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 420px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      padding: 0.85rem 2.2rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: background 0.3s, color 0.3s;
+    }
+    .hero-cta:hover { background: var(--accent); color: var(--bg); }
+
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeUp 1s 0.6s both;
+    }
+
+    .avatar-ring {
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      border: 1px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      animation: rotateSlow 20s linear infinite;
+    }
+
+    @keyframes rotateSlow {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    .avatar-ring::before {
+      content: '';
+      position: absolute;
+      width: 360px; height: 360px;
+      border-radius: 50%;
+      border: 1px dashed rgba(200,169,110,0.25);
+      animation: rotateSlow 30s linear infinite reverse;
+    }
+
+    .avatar-inner {
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+      border: 3px solid var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      animation: rotateSlow 20s linear infinite reverse;
+      font-size: 5rem;
+      overflow: hidden;
+    }
+
+    /* ABOUT SECTION */
+    .section {
+      padding: 6rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 3rem;
+      line-height: 1.15;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+
+    .about-block p {
+      color: var(--muted);
+      line-height: 1.9;
+      font-size: 0.97rem;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      transition: border-color 0.3s, transform 0.3s;
+      animation: fadeUp 0.6s both;
+    }
+    .skill-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+
+    .skill-card:nth-child(1) { animation-delay: 0.1s; }
+    .skill-card:nth-child(2) { animation-delay: 0.2s; }
+    .skill-card:nth-child(3) { animation-delay: 0.3s; }
+    .skill-card:nth-child(4) { animation-delay: 0.4s; }
+    .skill-card:nth-child(5) { animation-delay: 0.5s; }
+    .skill-card:nth-child(6) { animation-delay: 0.6s; }
+
+    .skill-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+    .skill-name { font-size: 0.85rem; font-weight: 500; margin-bottom: 0.4rem; color: var(--text); }
+    .skill-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+
+    /* DIVIDER */
+    .divider {
+      width: 60px; height: 1px;
+      background: var(--accent);
+      margin: 0 auto 5rem;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    /* FLOATING DOTS BACKGROUND */
+    .bg-dots {
+      position: fixed; inset: 0; pointer-events: none; z-index: -1;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; padding: 5rem 1.5rem 3rem; }
+      .hero-visual { display: none; }
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+      .about-grid, .skills-grid { grid-template-columns: 1fr; }
+      .section { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-dots"></div>
+
+  <nav>
+    <div class="nav-logo">B.A.</div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Hakkımda</a></li>
+      <li><a href="hobilerim.html">Hobilerim</a></li>
+      <li><a href="iletisim.html">İletişim</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Harita Mühendisliği Öğrencisi</p>
+      <h1 class="hero-name">Merhaba,<br>Ben <em>Ali</em><br>KARAAYDINLI.</h1>
+      <p class="hero-desc">
+        Hacettepe Üniversitesi Harita Mühendisliği Bölümü'nde öğrenim görüyorum.
+        Coğrafi bilgi sistemleri, web haritalama ve mekânsal veri analizi üzerine çalışıyorum.
+      </p>
+      <a href="hobilerim.html" class="hero-cta">Hobilerime Göz At →</a>
+    </div>
+    <div class="hero-visual">
+      <div class="avatar-ring">
+        <div class="avatar-inner">🗺️</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <p class="section-label reveal">Benim Hakkımda</p>
+    <h2 class="section-title reveal">Eğitim & Deneyim</h2>
+    <div class="about-grid">
+      <div class="about-block reveal">
+        <p>
+          Hacettepe Üniversitesi Mühendislik Fakültesi, Harita Mühendisliği Bölümü'nde lisans eğitimimi sürdürüyorum.
+          Web CBS (Coğrafi Bilgi Sistemleri) alanında, haritaların internet ortamında nasıl sunulduğunu, 
+          sorgulandığını ve analiz edildiğini öğreniyor; Leaflet ve OpenLayers gibi açık kaynaklı kütüphaneler 
+          üzerine projeler geliştiriyorum.
+        </p>
+      </div>
+      <div class="about-block reveal">
+        <p>
+          Mekânsal veri analizi, uzaktan algılama ve coğrafi veri tabanları konularına ilgi duyuyorum.
+          Python ile veri işleme ve görselleştirme projelerinde deneyim edindim. 
+          Açık kaynak topluluklarına katkı sağlamayı ve GitHub üzerinden projelerimi paylaşmayı 
+          hedefliyorum.
+        </p>
+      </div>
+    </div>
+
+    <p class="section-label reveal">Teknik Beceriler</p>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-icon">🌍</div>
+        <div class="skill-name">CBS & GIS</div>
+        <div class="skill-desc">QGIS, ArcGIS ve açık kaynak araçlarla mekânsal analiz</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🗺️</div>
+        <div class="skill-name">Web Haritalama</div>
+        <div class="skill-desc">Leaflet.js ve OpenLayers ile interaktif harita geliştirme</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">💻</div>
+        <div class="skill-name">Web Geliştirme</div>
+        <div class="skill-desc">HTML, CSS, JavaScript ile modern web arayüzleri</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🐍</div>
+        <div class="skill-name">Python</div>
+        <div class="skill-desc">GeoPandas, Shapely ile coğrafi veri işleme</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🛰️</div>
+        <div class="skill-name">Uzaktan Algılama</div>
+        <div class="skill-desc">Uydu görüntüsü işleme ve yorumlama</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🗄️</div>
+        <div class="skill-name">Veri Tabanları</div>
+        <div class="skill-desc">PostgreSQL / PostGIS ile mekânsal sorgulama</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span>© 2025 Ali KARAAYDINLI</span>
+    <span>Hacettepe Üniversitesi – Harita Mühendisliği</span>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
